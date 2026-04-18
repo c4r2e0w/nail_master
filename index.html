@@ -44,7 +44,7 @@
 
     <main class="site-main">
       <section class="hero shell" id="hero">
-        <div class="hero__copy panel panel--hero">
+        <div class="hero__copy panel panel--hero reveal reveal--hero">
           <h1>Базовый курс маникюра <span>от новичка до уверенного мастера</span></h1>
           <p class="lede">
             Многостраничная образовательная оболочка о маникюре, где теория,
@@ -62,7 +62,9 @@
             <a class="button button--ghost" href="#home-route">Смотреть маршрут</a>
           </div>
         </div>
+      </section>
 
+      <section class="shell hero-media reveal" aria-labelledby="hero-media-title">
         <aside class="hero__visual panel panel--soft">
           <video
             class="hero__video"
@@ -80,7 +82,7 @@
           <div class="visual-orb visual-orb--aqua"></div>
           <div class="visual-card">
             <p>Стартовая цель</p>
-            <h2>Научиться понимать технику, а не работать вслепую</h2>
+            <h2 id="hero-media-title">Научиться понимать технику, а не работать вслепую</h2>
           </div>
           <div class="visual-metrics">
             <div><strong>6</strong><span>страниц проекта</span></div>
@@ -91,7 +93,7 @@
       </section>
 
       <section class="shell overview-grid" id="about-course">
-        <article class="panel">
+        <article class="panel reveal">
           <p class="section-tag">О проекте</p>
           <h2>О курсе как о главе главной страницы</h2>
           <p>
@@ -100,7 +102,7 @@
             учебный экран выносится в отдельную центральную страницу курса.
           </p>
         </article>
-        <article class="panel panel--soft">
+        <article class="panel panel--soft reveal">
           <p class="section-tag">Что внутри главной</p>
           <ul class="clean-list">
             <li>главный экран с позиционированием проекта;</li>
@@ -112,7 +114,7 @@
         </article>
       </section>
 
-      <section class="shell roadmap-banner panel panel--wide" id="home-route">
+      <section class="shell roadmap-banner panel panel--wide reveal" id="home-route">
         <div>
           <p class="section-tag">Логика обучения</p>
           <h2>Путь от теории к результату</h2>

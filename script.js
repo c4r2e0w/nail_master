@@ -223,6 +223,32 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
+function setupRevealMotion() {
+  const revealNodes = [...document.querySelectorAll(".reveal")];
+  if (!revealNodes.length) return;
+
+  const thresholds = Array.from({ length: 21 }, (_, index) => index / 20);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const progress = Math.max(0, Math.min(1, entry.intersectionRatio * 1.2));
+        entry.target.style.setProperty("--reveal-progress", progress.toFixed(3));
+        entry.target.classList.toggle("is-visible", progress > 0.18);
+      });
+    },
+    {
+      threshold: thresholds,
+      rootMargin: "-8% 0px -8% 0px"
+    }
+  );
+
+  revealNodes.forEach((node, index) => {
+    node.style.setProperty("--reveal-progress", index === 0 ? "1" : "0");
+    if (index === 0) node.classList.add("is-visible");
+    observer.observe(node);
+  });
+}
+
 function setupQuiz() {
   const quizForm = document.getElementById("quiz-form");
   const result = document.getElementById("quiz-result");
@@ -268,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
+  setupRevealMotion();
   renderCourseHub();
   setupQuiz();
   renderProgress();

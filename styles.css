@@ -217,10 +217,15 @@ input {
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 22px;
   padding: 10px 0 22px;
+}
+
+.hero-media {
+  padding-bottom: 22px;
+}
+
+.hero__copy {
+  width: 100%;
 }
 
 .eyebrow,
@@ -332,7 +337,7 @@ input {
 .hero__visual {
   position: relative;
   overflow: hidden;
-  min-height: 560px;
+  min-height: 580px;
 }
 
 .hero__video,
@@ -430,6 +435,29 @@ input {
 
 .visual-metrics span {
   color: var(--muted);
+}
+
+.reveal {
+  --reveal-progress: 0;
+  opacity: calc(0.12 + (var(--reveal-progress) * 0.88));
+  transform:
+    translate3d(0, calc((1 - var(--reveal-progress)) * 64px), 0)
+    scale(calc(0.96 + (var(--reveal-progress) * 0.04)));
+  filter: blur(calc((1 - var(--reveal-progress)) * 10px));
+  will-change: transform, opacity, filter;
+}
+
+.reveal.is-visible {
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 24px 48px rgba(255, 110, 114, 0.08);
+}
+
+.reveal--hero {
+  transform:
+    translate3d(0, calc((1 - var(--reveal-progress)) * 42px), 0)
+    scale(calc(0.975 + (var(--reveal-progress) * 0.025)));
 }
 
 .overview-grid,
@@ -902,7 +930,6 @@ input {
 }
 
 @media (max-width: 980px) {
-  .hero,
   .overview-grid,
   .roadmap-banner,
   .course-hub,
@@ -983,6 +1010,10 @@ input {
 
   .button {
     width: 100%;
+  }
+
+  .hero__visual {
+    min-height: 500px;
   }
 
   .progress-widget {
