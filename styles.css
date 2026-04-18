@@ -561,12 +561,11 @@ body[data-page="home"] .editorial-route__head > *,
 body[data-page="home"] .editorial-route__track > *,
 body[data-page="home"] .site-footer__blessing > *,
 body[data-page="home"] .site-footer__panel .pager {
-  opacity: calc(0.04 + (var(--reveal-progress) * 0.96));
+  opacity: 1;
   transform:
     translate3d(0, calc((1 - var(--reveal-progress)) * 24px), 0)
     scale(calc(0.992 + (var(--reveal-progress) * 0.008)));
   transition:
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
