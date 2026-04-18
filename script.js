@@ -223,46 +223,54 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
-function setupHomeVideoTimeline() {
+function setupHomeFrameTimeline() {
   if (document.body.dataset.page !== "home") return;
-  const video = document.getElementById("home-scroll-video");
-  const main = document.querySelector(".site-main");
-  if (!video || !main) return;
+  const frameNode = document.getElementById("home-scroll-frame");
+  if (!frameNode) return;
 
-  let duration = 0;
+  const frameCount = 23;
+  const frameSources = Array.from({ length: frameCount }, (_, index) => {
+    const frameNumber = String(index + 1).padStart(3, "0");
+    return `assets/video/frames/frame-${frameNumber}.jpg`;
+  });
+
+  const preloadFrame = (src) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.src = src;
+  };
+
+  frameSources.slice(0, 6).forEach(preloadFrame);
+
+  let currentFrame = -1;
   let ticking = false;
 
-  const updateVideoTime = () => {
+  const paintFrame = (index) => {
+    if (index === currentFrame) return;
+    currentFrame = index;
+    const src = frameSources[index];
+    frameNode.style.backgroundImage = `url("${src}")`;
+    preloadFrame(frameSources[Math.min(frameSources.length - 1, index + 1)]);
+  };
+
+  const syncFrameToScroll = () => {
     ticking = false;
-    if (!duration) return;
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const progress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
-    const targetTime = progress * Math.max(0.01, duration - 0.08);
-    if (Math.abs(video.currentTime - targetTime) > 0.033) {
-      video.currentTime = targetTime;
-    }
+    const targetFrame = Math.min(frameSources.length - 1, Math.round(progress * (frameSources.length - 1)));
+    paintFrame(targetFrame);
   };
 
-  const requestUpdate = () => {
+  const requestSync = () => {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(updateVideoTime);
+    requestAnimationFrame(syncFrameToScroll);
   };
 
-  video.addEventListener("loadedmetadata", () => {
-    duration = video.duration || 0;
-    requestUpdate();
-  });
-
-  video.addEventListener("canplay", () => {
-    duration = video.duration || duration;
-    video.pause();
-    requestUpdate();
-  });
-
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate);
-  requestUpdate();
+  paintFrame(0);
+  window.addEventListener("scroll", requestSync, { passive: true });
+  window.addEventListener("resize", requestSync);
+  requestSync();
 }
 
 function setupRevealMotion() {
@@ -336,7 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
-  setupHomeVideoTimeline();
+  setupHomeFrameTimeline();
   setupRevealMotion();
   renderCourseHub();
   setupQuiz();
