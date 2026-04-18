@@ -295,6 +295,46 @@ function setupHomeVideoTimeline() {
   requestAnimationFrame(animateFocus);
 }
 
+function setupHomeHeaderRail() {
+  if (document.body.dataset.page !== "home") return;
+
+  const header = document.querySelector(".site-header");
+  const rail = document.getElementById("scene-rail");
+  const scenes = [...document.querySelectorAll(".home-scene[data-scene-title]")];
+  if (!header || !rail || !scenes.length) return;
+
+  rail.innerHTML = scenes
+    .map((scene) => `<a href="#${scene.id || 'home-route'}" data-scene-link="${scene.id || 'home-route'}">${scene.dataset.sceneTitle}</a>`)
+    .join("");
+
+  const links = [...rail.querySelectorAll("[data-scene-link]")];
+
+  const updateHeader = () => {
+    header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
+
+    let currentScene = scenes[0];
+    scenes.forEach((scene, index) => {
+      const rect = scene.getBoundingClientRect();
+      const isRead = rect.top <= window.innerHeight * 0.36;
+      const link = links[index];
+      if (!link) return;
+      link.classList.toggle("is-visible", isRead);
+
+      if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {
+        currentScene = scene;
+      }
+    });
+
+    links.forEach((link, index) => {
+      link.classList.toggle("is-current", scenes[index] === currentScene);
+    });
+  };
+
+  updateHeader();
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  window.addEventListener("resize", updateHeader);
+}
+
 function setupRevealMotion() {
   if (document.body.dataset.page === "home") return;
   const revealNodes = [...document.querySelectorAll(".reveal")];
@@ -385,6 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNav();
   setupScrollProgress();
   setupHomeVideoTimeline();
+  setupHomeHeaderRail();
   setupRevealMotion();
   renderCourseHub();
   setupQuiz();
