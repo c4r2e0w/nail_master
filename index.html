@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MANIIKABINET | Базовый курс маникюра</title>
+    <meta
+      name="description"
+      content="Многостраничный образовательный проект MANIIKABINET: базовый курс маникюра от новичка до уверенного мастера."
+    />
+    <meta name="theme-color" content="#f7e8df" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="home">
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+    <div class="page-glow page-glow--top" aria-hidden="true"></div>
+    <div class="page-glow page-glow--bottom" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="shell site-header__inner">
+        <a class="brand" href="index.html">
+          <span class="brand__title">MANIIKABINET</span>
+          <span class="brand__sub">базовый курс маникюра</span>
+        </a>
+
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+          <a href="index.html">Главная</a>
+          <a href="course.html">О курсе</a>
+          <a href="route.html">Маршрут</a>
+          <a href="modules.html">Модули</a>
+          <a href="practice.html">Практика</a>
+          <a href="testing.html">Тестирование</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <section class="hero shell">
+        <div class="hero__copy panel panel--hero">
+          <p class="eyebrow">Методичка 2 / образовательный digital-project</p>
+          <h1>Базовый курс маникюра <span>от новичка до уверенного мастера</span></h1>
+          <p class="lede">
+            Многостраничная образовательная оболочка о маникюре, где теория,
+            маршрут, практика и контроль знаний собраны в единую понятную систему.
+          </p>
+
+          <div class="hero__chips">
+            <div class="chip"><strong>Тема</strong><span>Базовый курс маникюра</span></div>
+            <div class="chip"><strong>Для кого</strong><span>Новички и мастера, которым нужна система</span></div>
+            <div class="chip"><strong>Формат</strong><span>Курс + методичка + тестирование</span></div>
+          </div>
+
+          <div class="hero__actions">
+            <a class="button button--primary" href="course.html">Открыть курс</a>
+            <a class="button button--ghost" href="route.html">Смотреть маршрут</a>
+          </div>
+        </div>
+
+        <aside class="hero__visual panel panel--soft">
+          <div class="visual-orb visual-orb--coral"></div>
+          <div class="visual-orb visual-orb--aqua"></div>
+          <div class="visual-card">
+            <p>Стартовая цель</p>
+            <h2>Научиться понимать технику, а не работать вслепую</h2>
+          </div>
+          <div class="visual-metrics">
+            <div><strong>6</strong><span>страниц проекта</span></div>
+            <div><strong>8</strong><span>ключевых модулей</span></div>
+            <div><strong>1</strong><span>контрольный тест</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="shell overview-grid">
+        <article class="panel">
+          <p class="section-tag">О проекте</p>
+          <h2>Не одна страница, а масштабируемая учебная система</h2>
+          <p>
+            Проект разделен на отдельные страницы: главная, описание курса,
+            маршрут обучения, программа модулей, практика и контрольное
+            тестирование. Такая структура удобнее для навигации, роста и
+            дальнейшего расширения новыми материалами.
+          </p>
+        </article>
+        <article class="panel panel--soft">
+          <p class="section-tag">Что внутри</p>
+          <ul class="clean-list">
+            <li>пастельная телесная палитра с яркими акцентами;</li>
+            <li>простая верхняя навигация между страницами;</li>
+            <li>метрика прогресса по страницам курса;</li>
+            <li>контрольный тест с сохранением результата;</li>
+            <li>готовность к публикации на GitHub Pages.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="shell roadmap-banner panel panel--wide">
+        <div>
+          <p class="section-tag">Логика обучения</p>
+          <h2>Путь от теории к результату</h2>
+        </div>
+        <div class="roadmap-banner__steps">
+          <span>строение ногтя</span>
+          <span>снятие и подготовка</span>
+          <span>комби-маникюр</span>
+          <span>покрытие и выравнивание</span>
+          <span>форма и стабильность</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <div class="panel site-footer__panel">
+        <div>
+          <strong>MANIIKABINET</strong>
+          <p>Обучение маникюру в понятной и профессиональной системе.</p>
+        </div>
+        <div class="pager">
+          <a class="button button--ghost" href="course.html">Дальше: о курсе</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

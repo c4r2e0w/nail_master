@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MANIIKABINET | О курсе</title>
+    <meta name="description" content="О курсе MANIIKABINET: для кого он создан, какую проблему решает и какой результат дает." />
+    <meta name="theme-color" content="#f7e8df" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="course">
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+    <div class="page-glow page-glow--top" aria-hidden="true"></div>
+    <div class="page-glow page-glow--bottom" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="shell site-header__inner">
+        <a class="brand" href="index.html">
+          <span class="brand__title">MANIIKABINET</span>
+          <span class="brand__sub">базовый курс маникюра</span>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+          <a href="index.html">Главная</a>
+          <a href="course.html">О курсе</a>
+          <a href="route.html">Маршрут</a>
+          <a href="modules.html">Модули</a>
+          <a href="practice.html">Практика</a>
+          <a href="testing.html">Тестирование</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main shell page-stack">
+      <section class="page-head panel panel--wide">
+        <p class="section-tag">Страница 2</p>
+        <h1>О курсе / программе</h1>
+        <p>
+          Этот курс посвящен базовым принципам маникюра: от понимания ногтевой
+          пластины до техники покрытия и стабильного результата в работе.
+        </p>
+      </section>
+
+      <section class="content-grid content-grid--two">
+        <article class="panel">
+          <p class="section-tag">Зачем он нужен</p>
+          <h2>Собрать профессию в ясную последовательность</h2>
+          <p>
+            Маникюр это не просто эстетика, а система работы с ногтевой
+            пластиной. Когда ученик понимает это, он начинает видеть логику
+            стойкости покрытия, безопасности клиента, скорости работы и
+            конечного результата.
+          </p>
+        </article>
+        <article class="panel panel--soft">
+          <p class="section-tag">Результат</p>
+          <h2>Понять, почему работа держится и выглядит чисто</h2>
+          <p>
+            В методичке собраны базовые принципы и техники, которые позволяют
+            работать уверенно и профессионально, а не опираться только на
+            визуальную память и случайные советы.
+          </p>
+        </article>
+      </section>
+
+      <section class="content-grid content-grid--three">
+        <article class="panel">
+          <p class="section-tag">Для кого</p>
+          <h3>Новички</h3>
+          <p>Тем, кто хочет войти в профессию аккуратно и без переучивания.</p>
+        </article>
+        <article class="panel">
+          <p class="section-tag">Стартовый уровень</p>
+          <h3>С нуля или с базой</h3>
+          <p>Курс подходит и для полного старта, и для мастеров, которым нужна системность.</p>
+        </article>
+        <article class="panel">
+          <p class="section-tag">Какие боли закрывает</p>
+          <h3>Хаос и неуверенность</h3>
+          <p>Страх аппарата, нестойкость покрытия, грязный контур, ошибки в форме и отсутствие понимания процессов.</p>
+        </article>
+      </section>
+
+      <section class="panel panel--wide progress-summary">
+        <div>
+          <p class="section-tag">Прогресс курса</p>
+          <h2>Как движется ученик</h2>
+          <p>Метрика ниже обновляется автоматически по посещенным страницам и результату теста.</p>
+        </div>
+        <div class="progress-widget">
+          <div class="progress-widget__ring"><span data-progress-percent>0%</span></div>
+          <div class="progress-widget__meta">
+            <strong data-progress-text>0 из 6 шагов пройдено</strong>
+            <span data-quiz-status>Тест еще не пройден</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <div class="panel site-footer__panel">
+        <a class="button button--ghost" href="index.html">Назад: главная</a>
+        <a class="button button--primary" href="route.html">Дальше: маршрут</a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
