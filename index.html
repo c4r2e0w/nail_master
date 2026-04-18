@@ -18,6 +18,17 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-page="home">
+    <div class="home-video-stage" aria-hidden="true">
+      <video
+        class="home-video-stage__video"
+        id="home-scroll-video"
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="assets/video/hero-background.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
     <div class="page-glow page-glow--top" aria-hidden="true"></div>
     <div class="page-glow page-glow--bottom" aria-hidden="true"></div>
@@ -64,32 +75,16 @@
         </div>
       </section>
 
-      <section class="shell hero-media reveal" aria-labelledby="hero-media-title">
-        <aside class="hero__visual panel panel--soft">
-          <video
-            class="hero__video"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-            aria-label="Фоновое видео главной страницы"
-          >
-            <source src="assets/video/hero-background.mp4" type="video/mp4" />
-          </video>
-          <div class="hero__video-overlay" aria-hidden="true"></div>
-          <div class="visual-orb visual-orb--coral"></div>
-          <div class="visual-orb visual-orb--aqua"></div>
-          <div class="visual-card">
-            <p>Стартовая цель</p>
-            <h2 id="hero-media-title">Научиться понимать технику, а не работать вслепую</h2>
-          </div>
-          <div class="visual-metrics">
-            <div><strong>6</strong><span>страниц проекта</span></div>
-            <div><strong>8</strong><span>ключевых модулей</span></div>
-            <div><strong>1</strong><span>контрольный тест</span></div>
-          </div>
-        </aside>
+      <section class="shell hero-facts reveal" aria-labelledby="hero-media-title">
+        <div class="hero-facts__lead">
+          <p>Стартовая цель</p>
+          <h2 id="hero-media-title">Научиться понимать технику, а не работать вслепую</h2>
+        </div>
+        <div class="hero-facts__metrics">
+          <div><strong>6</strong><span>страниц проекта</span></div>
+          <div><strong>8</strong><span>ключевых модулей</span></div>
+          <div><strong>1</strong><span>контрольный тест</span></div>
+        </div>
       </section>
 
       <section class="shell editorial-flow" id="about-course">

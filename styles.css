@@ -39,6 +39,37 @@ body {
   overflow-x: hidden;
 }
 
+body[data-page="home"] {
+  background:
+    linear-gradient(180deg, rgba(251, 245, 241, 0.28) 0%, rgba(247, 237, 231, 0.4) 45%, rgba(242, 225, 215, 0.58) 100%);
+}
+
+body[data-page="home"] .page-glow {
+  opacity: 0.68;
+}
+
+.home-video-stage {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  overflow: hidden;
+  background: #1f1511;
+}
+
+.home-video-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 247, 241, 0.08), rgba(255, 239, 231, 0.16) 35%, rgba(247, 231, 224, 0.3) 100%);
+}
+
+.home-video-stage__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+}
+
 body.menu-open {
   overflow: hidden;
 }
@@ -219,12 +250,9 @@ input {
   padding: 18px 0 34px;
 }
 
-.hero-media {
-  padding-bottom: 38px;
-}
-
 .hero__copy {
   width: 100%;
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.58), rgba(255, 246, 240, 0.72));
 }
 
 .eyebrow,
@@ -333,105 +361,61 @@ input {
   background: rgba(255, 255, 255, 0.46);
 }
 
-.hero__visual {
-  position: relative;
-  overflow: hidden;
-  min-height: 620px;
+.hero-facts {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 24px;
+  align-items: end;
+  padding-bottom: 54px;
 }
 
-.hero__video,
-.hero__video-overlay {
-  position: absolute;
-  inset: 0;
+.hero-facts__lead,
+.hero-facts__metrics {
+  padding: 26px 0;
 }
 
-.hero__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero__video-overlay {
-  background:
-    linear-gradient(180deg, rgba(255, 248, 243, 0.14), rgba(255, 244, 238, 0.42)),
-    linear-gradient(135deg, rgba(255, 110, 114, 0.18), rgba(77, 207, 218, 0.16));
-}
-
-.visual-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(6px);
-}
-
-.visual-orb--coral {
-  top: 40px;
-  right: 40px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(255, 110, 114, 0.58), rgba(255, 110, 114, 0.06));
-}
-
-.visual-orb--aqua {
-  left: 40px;
-  bottom: 60px;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(77, 207, 218, 0.44), rgba(77, 207, 218, 0.08));
-}
-
-.visual-card,
-.visual-metrics {
-  position: absolute;
-  z-index: 2;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 249, 245, 0.78);
-}
-
-.visual-card {
-  left: 24px;
-  right: 24px;
-  bottom: 146px;
-  padding: 24px;
-}
-
-.visual-card p {
-  margin: 0 0 10px;
-  color: var(--accent);
+.hero-facts__lead p {
+  margin: 0 0 12px;
+  color: rgba(52, 37, 32, 0.76);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  font-size: 0.76rem;
 }
 
-.visual-card h2 {
+.hero-facts__lead h2 {
   margin: 0;
+  max-width: 720px;
   font-family: "Playfair Display", serif;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.04;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
-.visual-metrics {
-  left: 24px;
-  right: 24px;
-  bottom: 28px;
+.hero-facts__metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  padding: 20px;
+  gap: 18px;
 }
 
-.visual-metrics strong,
-.visual-metrics span {
+.hero-facts__metrics div {
+  padding: 22px 18px;
+  border-top: 1px solid rgba(121, 90, 79, 0.18);
+}
+
+.hero-facts__metrics strong,
+.hero-facts__metrics span {
   display: block;
 }
 
-.visual-metrics strong {
-  font-size: 1.8rem;
-  color: var(--accent-4);
+.hero-facts__metrics strong {
+  margin-bottom: 8px;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  color: #8c5fff;
 }
 
-.visual-metrics span {
+.hero-facts__metrics span {
   color: var(--muted);
+  line-height: 1.5;
 }
 
 .reveal {
@@ -1107,7 +1091,11 @@ input {
   }
 
   .hero__chips,
-  .visual-metrics {
+  .hero-facts__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-facts {
     grid-template-columns: 1fr;
   }
 
@@ -1186,10 +1174,6 @@ input {
 
   .button {
     width: 100%;
-  }
-
-  .hero__visual {
-    min-height: 560px;
   }
 
   .progress-widget {

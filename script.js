@@ -223,6 +223,48 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
+function setupHomeVideoTimeline() {
+  if (document.body.dataset.page !== "home") return;
+  const video = document.getElementById("home-scroll-video");
+  const main = document.querySelector(".site-main");
+  if (!video || !main) return;
+
+  let duration = 0;
+  let ticking = false;
+
+  const updateVideoTime = () => {
+    ticking = false;
+    if (!duration) return;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+    const targetTime = progress * Math.max(0.01, duration - 0.08);
+    if (Math.abs(video.currentTime - targetTime) > 0.033) {
+      video.currentTime = targetTime;
+    }
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateVideoTime);
+  };
+
+  video.addEventListener("loadedmetadata", () => {
+    duration = video.duration || 0;
+    requestUpdate();
+  });
+
+  video.addEventListener("canplay", () => {
+    duration = video.duration || duration;
+    video.pause();
+    requestUpdate();
+  });
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  requestUpdate();
+}
+
 function setupRevealMotion() {
   const revealNodes = [...document.querySelectorAll(".reveal")];
   if (!revealNodes.length) return;
@@ -294,6 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
+  setupHomeVideoTimeline();
   setupRevealMotion();
   renderCourseHub();
   setupQuiz();
