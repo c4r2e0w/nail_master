@@ -227,18 +227,18 @@ function setupRevealMotion() {
   const revealNodes = [...document.querySelectorAll(".reveal")];
   if (!revealNodes.length) return;
 
-  const thresholds = Array.from({ length: 21 }, (_, index) => index / 20);
+  const thresholds = [0, 0.12, 0.24, 0.4, 0.6, 0.8, 1];
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const progress = Math.max(0, Math.min(1, entry.intersectionRatio * 1.2));
+        const progress = Math.max(0, Math.min(1, entry.intersectionRatio * 1.08));
         entry.target.style.setProperty("--reveal-progress", progress.toFixed(3));
-        entry.target.classList.toggle("is-visible", progress > 0.18);
+        entry.target.classList.toggle("is-visible", progress > 0.14);
       });
     },
     {
       threshold: thresholds,
-      rootMargin: "-8% 0px -8% 0px"
+      rootMargin: "-4% 0px -6% 0px"
     }
   );
 
