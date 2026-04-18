@@ -35,10 +35,10 @@
         </button>
 
         <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
-          <a href="index.html">Главная</a>
-          <a href="course.html">О курсе</a>
-          <a href="route.html">Маршрут</a>
-          <a href="modules.html">Модули</a>
+          <a href="index.html#hero">Главная</a>
+          <a href="index.html#about-course">О курсе</a>
+          <a href="index.html#home-route">Маршрут</a>
+          <a href="modules.html">Курс</a>
           <a href="practice.html">Практика</a>
           <a href="testing.html">Тестирование</a>
         </nav>
@@ -46,7 +46,7 @@
     </header>
 
     <main class="site-main">
-      <section class="hero shell">
+      <section class="hero shell" id="hero">
         <div class="hero__copy panel panel--hero">
           <p class="eyebrow">Методичка 2 / образовательный digital-project</p>
           <h1>Базовый курс маникюра <span>от новичка до уверенного мастера</span></h1>
@@ -62,8 +62,8 @@
           </div>
 
           <div class="hero__actions">
-            <a class="button button--primary" href="course.html">Открыть курс</a>
-            <a class="button button--ghost" href="route.html">Смотреть маршрут</a>
+            <a class="button button--primary" href="modules.html">Открыть медиа-учебник</a>
+            <a class="button button--ghost" href="#home-route">Смотреть маршрут</a>
           </div>
         </div>
 
@@ -82,30 +82,29 @@
         </aside>
       </section>
 
-      <section class="shell overview-grid">
+      <section class="shell overview-grid" id="about-course">
         <article class="panel">
           <p class="section-tag">О проекте</p>
-          <h2>Не одна страница, а масштабируемая учебная система</h2>
+          <h2>О курсе как о главе главной страницы</h2>
           <p>
-            Проект разделен на отдельные страницы: главная, описание курса,
-            маршрут обучения, программа модулей, практика и контрольное
-            тестирование. Такая структура удобнее для навигации, роста и
-            дальнейшего расширения новыми материалами.
+            Главная теперь собирает вводную часть проекта целиком: позиционирование,
+            описание курса и маршрут обучения. Это делает старт проще, а основной
+            учебный экран выносится в отдельную центральную страницу курса.
           </p>
         </article>
         <article class="panel panel--soft">
-          <p class="section-tag">Что внутри</p>
+          <p class="section-tag">Что внутри главной</p>
           <ul class="clean-list">
-            <li>пастельная телесная палитра с яркими акцентами;</li>
-            <li>простая верхняя навигация между страницами;</li>
-            <li>метрика прогресса по страницам курса;</li>
-            <li>контрольный тест с сохранением результата;</li>
-            <li>готовность к публикации на GitHub Pages.</li>
+            <li>главный экран с позиционированием проекта;</li>
+            <li>подглава «О курсе»;</li>
+            <li>подглава «Маршрут»;</li>
+            <li>переход в основной медиа-учебник;</li>
+            <li>дальнейший вход в практику и тестирование.</li>
           </ul>
         </article>
       </section>
 
-      <section class="shell roadmap-banner panel panel--wide">
+      <section class="shell roadmap-banner panel panel--wide" id="home-route">
         <div>
           <p class="section-tag">Логика обучения</p>
           <h2>Путь от теории к результату</h2>
@@ -124,10 +123,10 @@
       <div class="panel site-footer__panel">
         <div>
           <strong>MANIIKABINET</strong>
-          <p>Обучение маникюру в понятной и профессиональной системе.</p>
+          <p>Главная страница теперь ведет в основной курс как в центральный медиа-учебник проекта.</p>
         </div>
         <div class="pager">
-          <a class="button button--ghost" href="course.html">Дальше: о курсе</a>
+          <a class="button button--ghost" href="modules.html">Дальше: открыть курс</a>
         </div>
       </div>
     </footer>

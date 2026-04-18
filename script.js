@@ -55,8 +55,11 @@ function setupNav() {
   const page = document.body.dataset.page;
   document.querySelectorAll(".site-nav a").forEach((link) => {
     const href = link.getAttribute("href");
-    const file = href.replace(".html", "").replace("index", "home");
-    if (file === page) link.classList.add("is-active");
+    const [rawFile] = href.split("#");
+    const file = (rawFile || "index.html").replace(".html", "").replace("index", "home");
+    if ((page === "home" && href.startsWith("index.html#hero")) || file === page) {
+      link.classList.add("is-active");
+    }
   });
 
   const menuToggle = document.getElementById("menu-toggle");
