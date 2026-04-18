@@ -228,16 +228,10 @@ function setupHomeVideoTimeline() {
   const video = document.getElementById("home-scroll-video");
   if (!video) return;
 
-  let currentRate = 0.62;
-  let targetRate = 0.62;
-  let lastTick = 0;
-  let lastScrollY = window.scrollY;
-  let lastScrollTime = performance.now();
-  let lastInteractionTime = lastScrollTime;
-  let rafId = 0;
-  let isReady = false;
+  const scenes = [...document.querySelectorAll(".home-scene")];
+  let currentFocus = Number(scenes[0]?.dataset.videoFocus || 16);
+  let targetFocus = currentFocus;
 
-  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const ensurePlayback = () => {
     const playAttempt = video.play();
     if (playAttempt && typeof playAttempt.catch === "function") {
@@ -245,47 +239,14 @@ function setupHomeVideoTimeline() {
     }
   };
 
-  const syncFromScroll = () => {
-    const now = performance.now();
-    const deltaY = window.scrollY - lastScrollY;
-    const deltaTime = Math.max(16, now - lastScrollTime);
-    const screensPerSecond = Math.abs(deltaY) / Math.max(window.innerHeight, 1) / (deltaTime / 1000);
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = clamp(window.scrollY / maxScroll, 0, 1);
-
-    if (Math.abs(deltaY) > 0.5) {
-      lastInteractionTime = now;
-    }
-
-    targetRate = clamp(0.62 + screensPerSecond * 0.9, 0.62, 2.1);
-    const focusY = 14 + progress * 58;
-    video.style.setProperty("--video-focus-y", `${focusY.toFixed(2)}%`);
-    lastScrollY = window.scrollY;
-    lastScrollTime = now;
-  };
-
-  const tick = (timestamp) => {
-    rafId = requestAnimationFrame(tick);
-    if (!isReady) return;
-
-    if (!lastTick) lastTick = timestamp;
-    const deltaTime = Math.min(0.05, (timestamp - lastTick) / 1000);
-    lastTick = timestamp;
-
-    const idleFor = timestamp - lastInteractionTime;
-    const desiredRate = idleFor > 220 ? 0.62 : targetRate;
-    const easing = 1 - Math.exp(-deltaTime * 5.4);
-    currentRate += (desiredRate - currentRate) * easing;
-
-    if (Math.abs(video.playbackRate - currentRate) > 0.02) {
-      video.playbackRate = currentRate;
-    }
+  const applyScene = (scene) => {
+    scenes.forEach((node) => node.classList.toggle("is-active", node === scene));
+    targetFocus = Number(scene?.dataset.videoFocus || targetFocus);
   };
 
   const markReady = () => {
-    isReady = true;
-    video.defaultPlaybackRate = 0.62;
-    video.playbackRate = currentRate;
+    video.defaultPlaybackRate = 0.88;
+    video.playbackRate = 0.88;
     ensurePlayback();
   };
 
@@ -298,31 +259,44 @@ function setupHomeVideoTimeline() {
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = 0;
-      }
       return;
     }
     ensurePlayback();
-    if (!rafId) {
-      lastScrollY = window.scrollY;
-      lastScrollTime = performance.now();
-      lastTick = 0;
-      rafId = requestAnimationFrame(tick);
-    }
   });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const activeEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (activeEntry) {
+        applyScene(activeEntry.target);
+      }
+    },
+    {
+      threshold: [0.45, 0.6, 0.8],
+      rootMargin: "-6% 0px -6% 0px"
+    }
+  );
+
+  scenes.forEach((scene) => observer.observe(scene));
+  if (scenes[0]) applyScene(scenes[0]);
+
+  const animateFocus = () => {
+    currentFocus += (targetFocus - currentFocus) * 0.08;
+    video.style.setProperty("--video-focus-y", `${currentFocus.toFixed(2)}%`);
+    requestAnimationFrame(animateFocus);
+  };
 
   window.addEventListener("pageshow", ensurePlayback);
   window.addEventListener("touchstart", ensurePlayback, { passive: true });
-  window.addEventListener("scroll", syncFromScroll, { passive: true });
-  window.addEventListener("resize", syncFromScroll);
-  syncFromScroll();
   ensurePlayback();
-  rafId = requestAnimationFrame(tick);
+  requestAnimationFrame(animateFocus);
 }
 
 function setupRevealMotion() {
+  if (document.body.dataset.page === "home") return;
   const revealNodes = [...document.querySelectorAll(".reveal")];
   if (!revealNodes.length) return;
   let ticking = false;
