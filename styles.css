@@ -619,11 +619,13 @@ body[data-page="home"] .button--ghost {
 
 .home-scene--metrics,
 .home-scene--editorial,
-.home-scene--finale {
+.home-scene--route,
+.home-scene--blessing {
   min-height: calc(100svh - 24px);
 }
 
-.home-scene--finale {
+.home-scene--route,
+.home-scene--blessing {
   gap: 24px;
 }
 
@@ -1480,11 +1482,12 @@ body[data-page="home"] .site-footer {
 
   .home-scene--hero,
   .home-scene--metrics,
-  .home-scene--editorial {
+  .home-scene--editorial,
+  .home-scene--route {
     min-height: calc(100svh - 16px);
   }
 
-  .home-scene--finale {
+  .home-scene--blessing {
     min-height: auto;
     padding-bottom: calc(var(--header-h) + 52px);
   }
@@ -1624,11 +1627,12 @@ body[data-page="home"] .site-footer {
 
   .home-scene--hero,
   .home-scene--metrics,
-  .home-scene--editorial {
+  .home-scene--editorial,
+  .home-scene--route {
     min-height: calc(100svh - 12px);
   }
 
-  .home-scene--finale {
+  .home-scene--blessing {
     min-height: auto;
     padding-top: 20px;
     padding-bottom: calc(var(--header-h) + 64px);
