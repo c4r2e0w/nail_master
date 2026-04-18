@@ -228,32 +228,34 @@ function setupHomeVideoTimeline() {
   const video = document.getElementById("home-scroll-video");
   if (!video) return;
 
-  let duration = 5.6;
-  let currentTime = 0.04;
-  let currentVelocity = 0.05;
-  let targetVelocity = 0.05;
-  let direction = 1;
+  let currentRate = 0.62;
+  let targetRate = 0.62;
   let lastTick = 0;
   let lastScrollY = window.scrollY;
   let lastScrollTime = performance.now();
   let lastInteractionTime = lastScrollTime;
-  let isReady = false;
   let rafId = 0;
+  let isReady = false;
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const ensurePlayback = () => {
+    const playAttempt = video.play();
+    if (playAttempt && typeof playAttempt.catch === "function") {
+      playAttempt.catch(() => {});
+    }
+  };
 
   const syncFromScroll = () => {
     const now = performance.now();
     const deltaY = window.scrollY - lastScrollY;
     const deltaTime = Math.max(16, now - lastScrollTime);
-    const screensPerSecond = deltaY / Math.max(window.innerHeight, 1) / (deltaTime / 1000);
+    const screensPerSecond = Math.abs(deltaY) / Math.max(window.innerHeight, 1) / (deltaTime / 1000);
 
     if (Math.abs(deltaY) > 0.5) {
-      direction = Math.sign(deltaY) || direction;
       lastInteractionTime = now;
     }
 
-    targetVelocity = clamp(screensPerSecond * 0.22, -0.82, 0.82);
+    targetRate = clamp(0.62 + screensPerSecond * 0.9, 0.62, 2.1);
     lastScrollY = window.scrollY;
     lastScrollTime = now;
   };
@@ -267,62 +269,52 @@ function setupHomeVideoTimeline() {
     lastTick = timestamp;
 
     const idleFor = timestamp - lastInteractionTime;
-    const baseVelocity = 0.045 * direction;
-    const desiredVelocity = idleFor > 160 ? baseVelocity : targetVelocity;
-    const easing = 1 - Math.exp(-deltaTime * 6.5);
-    currentVelocity += (desiredVelocity - currentVelocity) * easing;
-    currentTime += currentVelocity * deltaTime;
+    const desiredRate = idleFor > 220 ? 0.62 : targetRate;
+    const easing = 1 - Math.exp(-deltaTime * 5.4);
+    currentRate += (desiredRate - currentRate) * easing;
 
-    const edgePadding = 0.045;
-    const maxTime = Math.max(edgePadding, duration - edgePadding);
-
-    if (currentTime >= maxTime) {
-      currentTime = maxTime;
-      direction = -1;
-      targetVelocity = Math.min(targetVelocity, -0.18);
-      currentVelocity = Math.min(currentVelocity, 0);
-      lastInteractionTime = timestamp;
-    } else if (currentTime <= edgePadding) {
-      currentTime = edgePadding;
-      direction = 1;
-      targetVelocity = Math.max(targetVelocity, 0.18);
-      currentVelocity = Math.max(currentVelocity, 0);
-      lastInteractionTime = timestamp;
-    }
-
-    if (Math.abs(video.currentTime - currentTime) > 0.012) {
-      video.currentTime = currentTime;
+    if (Math.abs(video.playbackRate - currentRate) > 0.02) {
+      video.playbackRate = currentRate;
     }
   };
 
   const markReady = () => {
-    duration = video.duration || duration;
-    currentTime = clamp(currentTime, 0.04, Math.max(0.04, duration - 0.04));
     isReady = true;
-    video.pause();
-    video.currentTime = currentTime;
+    video.defaultPlaybackRate = 0.62;
+    video.playbackRate = currentRate;
+    ensurePlayback();
   };
 
   video.addEventListener("loadedmetadata", markReady, { once: true });
   video.addEventListener("canplay", markReady, { once: true });
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    ensurePlayback();
+  });
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      cancelAnimationFrame(rafId);
-      rafId = 0;
-      lastTick = 0;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
       return;
     }
+    ensurePlayback();
     if (!rafId) {
       lastScrollY = window.scrollY;
       lastScrollTime = performance.now();
+      lastTick = 0;
       rafId = requestAnimationFrame(tick);
     }
   });
 
+  window.addEventListener("pageshow", ensurePlayback);
+  window.addEventListener("touchstart", ensurePlayback, { passive: true });
   window.addEventListener("scroll", syncFromScroll, { passive: true });
   window.addEventListener("resize", syncFromScroll);
   syncFromScroll();
+  ensurePlayback();
   rafId = requestAnimationFrame(tick);
 }
 
