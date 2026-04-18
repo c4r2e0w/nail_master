@@ -250,12 +250,16 @@ function setupHomeVideoTimeline() {
     const deltaY = window.scrollY - lastScrollY;
     const deltaTime = Math.max(16, now - lastScrollTime);
     const screensPerSecond = Math.abs(deltaY) / Math.max(window.innerHeight, 1) / (deltaTime / 1000);
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = clamp(window.scrollY / maxScroll, 0, 1);
 
     if (Math.abs(deltaY) > 0.5) {
       lastInteractionTime = now;
     }
 
     targetRate = clamp(0.62 + screensPerSecond * 0.9, 0.62, 2.1);
+    const focusY = 14 + progress * 58;
+    video.style.setProperty("--video-focus-y", `${focusY.toFixed(2)}%`);
     lastScrollY = window.scrollY;
     lastScrollTime = now;
   };
