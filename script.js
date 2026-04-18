@@ -321,27 +321,44 @@ function setupHomeVideoTimeline() {
 function setupRevealMotion() {
   const revealNodes = [...document.querySelectorAll(".reveal")];
   if (!revealNodes.length) return;
+  let ticking = false;
 
-  const thresholds = [0, 0.12, 0.24, 0.4, 0.6, 0.8, 1];
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const progress = Math.max(0, Math.min(1, entry.intersectionRatio * 1.08));
-        entry.target.style.setProperty("--reveal-progress", progress.toFixed(3));
-        entry.target.classList.toggle("is-visible", progress > 0.14);
-      });
-    },
-    {
-      threshold: thresholds,
-      rootMargin: "-4% 0px -6% 0px"
-    }
-  );
+  const update = () => {
+    ticking = false;
+    const viewportHeight = window.innerHeight || 1;
+    const focusLine = viewportHeight * 0.54;
+    const travel = viewportHeight * 0.72;
+
+    revealNodes.forEach((node, index) => {
+      const rect = node.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const distance = Math.abs(center - focusLine);
+      let progress = 1 - distance / travel;
+      progress = Math.max(0, Math.min(1, progress));
+
+      if (index === 0 && window.scrollY < viewportHeight * 0.15) {
+        progress = 1;
+      }
+
+      node.style.setProperty("--reveal-progress", progress.toFixed(3));
+      node.classList.toggle("is-visible", progress > 0.16);
+    });
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
 
   revealNodes.forEach((node, index) => {
     node.style.setProperty("--reveal-progress", index === 0 ? "1" : "0");
     if (index === 0) node.classList.add("is-visible");
-    observer.observe(node);
   });
+
+  update();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
 }
 
 function setupQuiz() {
