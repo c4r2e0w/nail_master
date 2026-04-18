@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MANIIKABINET | Основной курс</title>
-    <meta name="description" content="Основной курс MANIIKABINET: центральный медиа-учебник приложения с содержанием, главами и логикой обучения." />
+    <title>MANIIKABINET | Курс</title>
+    <meta
+      name="description"
+      content="Центральный экран приложения MANIIKABINET: интерактивный курс, содержание-навигация, главы, медиа и прогресс прохождения."
+    />
     <meta name="theme-color" content="#f7e8df" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,198 +45,62 @@
 
     <main class="site-main shell page-stack">
       <section class="page-head panel panel--wide">
-        <p class="section-tag">Страница 4</p>
+        <p class="section-tag">Центр приложения</p>
         <h1>Основной курс / медиа-учебник</h1>
         <p>
-          Это основная цель приложения: не просто навигация по разделам, а
-          полноценный медиа-учебник MANIIKABINET, где собраны содержание,
-          ключевые главы, логика прохождения и сам учебный материал.
+          Эта страница является основной целью приложения. Здесь курс проходит в
+          игровой форме: через содержание-навигацию, главы, чекпоинты, медиа и
+          прогресс прохождения.
         </p>
       </section>
 
-      <section class="content-grid content-grid--two">
-        <article class="panel">
-          <p class="section-tag">Главная цель приложения</p>
-          <h2>Показать курс как основной цифровой учебник</h2>
-          <p>
-            Эта страница выступает центральным экраном всей системы. Именно сюда
-            должен приходить пользователь за самим содержанием курса, а не только
-            за обзором проекта.
-          </p>
-        </article>
-        <article class="panel panel--soft">
-          <p class="section-tag">Содержание</p>
-          <ol class="clean-list">
-            <li>Введение</li>
-            <li>Строение ногтевой пластины</li>
-            <li>Снятие материала</li>
-            <li>Подготовка ногтевой пластины</li>
-            <li>Аппаратный / комби-маникюр</li>
-            <li>Техника покрытия</li>
-            <li>Выравнивание ногтевой пластины</li>
-            <li>Формы ногтей</li>
-          </ol>
-        </article>
-      </section>
+      <section class="course-hub">
+        <aside class="panel course-sidebar">
+          <div class="course-sidebar__block">
+            <p class="section-tag">Содержание</p>
+            <nav class="course-toc" id="course-toc" aria-label="Содержание курса"></nav>
+          </div>
 
-      <section class="methodology-sheet">
-        <div class="methodology-grid">
-          <article class="panel module-detail">
-            <p class="section-tag">1. Введение</p>
-            <h2>Маникюр как система работы</h2>
-            <p>
-              Маникюр это не просто эстетика, а система работы с ногтевой
-              пластиной. От правильной техники зависят стойкость покрытия,
-              безопасность клиента, скорость работы и конечный результат.
-            </p>
-            <p>
-              В данной методичке собраны базовые принципы и техники, которые
-              позволяют работать уверенно и профессионально.
-            </p>
-          </article>
-
-          <article class="panel module-detail">
-            <p class="section-tag">2. Строение ногтевой пластины</p>
-            <h2>Безопасность начинается с понимания ногтя</h2>
-            <p>Ноготь состоит из нескольких важных элементов:</p>
-            <ul class="clean-list">
-              <li>ногтевая пластина</li>
-              <li>матрикс</li>
-              <li>ногтевое ложе</li>
-              <li>кутикула</li>
-              <li>гипонихий</li>
-            </ul>
-            <p>
-              Понимание строения ногтя необходимо для безопасной работы и
-              предотвращения повреждений.
-            </p>
-          </article>
-
-          <article class="panel module-detail">
-            <p class="section-tag">3. Снятие материала</p>
-            <h2>Работа фрезой по зонам</h2>
-            <p>Снятие покрытия выполняется фрезой с соблюдением зон работы.</p>
-            <ol>
-              <li>Снятие цветного покрытия</li>
-              <li>Снятие длины</li>
-              <li>Выравнивание остатков базы</li>
-            </ol>
-            <div class="note-box">
-              <strong>Важно</strong>
-              <ul class="clean-list">
-                <li>не давить на ноготь</li>
-                <li>работать по зонам</li>
-                <li>контролировать температуру</li>
-              </ul>
+          <div class="course-sidebar__block">
+            <p class="section-tag">Прогресс курса</p>
+            <div class="progress-widget progress-widget--column">
+              <div class="progress-widget__ring"><span data-course-percent>0%</span></div>
+              <div class="progress-widget__meta">
+                <strong data-course-progress-text>0 из 8 глав пройдено</strong>
+                <span data-course-progress-sub>Отмечай главы после изучения</span>
+              </div>
             </div>
-          </article>
+          </div>
 
-          <article class="panel module-detail">
-            <p class="section-tag">4. Подготовка ногтевой пластины</p>
-            <h2>Чистая база перед покрытием</h2>
-            <ol>
-              <li>Снятие старого покрытия</li>
-              <li>Опил формы натурального ногтя</li>
-              <li>Шлифовка</li>
-              <li>Маникюр аппаратный или комбинированный</li>
-              <li>Обезжиривание</li>
-              <li>Нанесение базы</li>
-            </ol>
-          </article>
-
-          <article class="panel module-detail">
-            <p class="section-tag">5. Аппаратный / комби-маникюр</p>
-            <h2>Основные этапы обработки</h2>
-            <ol>
-              <li>Поднятие кутикулы</li>
-              <li>Раскрытие кармана</li>
-              <li>Обработка синусов</li>
-              <li>Срез кутикулы</li>
-              <li>Шлифовка</li>
-            </ol>
-            <div class="note-box">
-              <strong>Важно</strong>
-              <ul class="clean-list">
-                <li>не работать на скорости вслепую</li>
-                <li>не заходить на живую кожу</li>
-                <li>контролировать угол</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="panel module-detail">
-            <p class="section-tag">6. Техника покрытия</p>
-            <h2>Правила и последовательность</h2>
-            <p>Базовые правила:</p>
-            <ul class="clean-list">
-              <li>угол кисти примерно 45°</li>
-              <li>не давим на кисть</li>
-              <li>работаем в полворса</li>
-            </ul>
-            <p>Техника нанесения:</p>
-            <ol>
-              <li>Тонкий первый слой</li>
-              <li>Прокраска боковых зон</li>
-              <li>Работа у кутикулы</li>
-              <li>Второй слой</li>
-            </ol>
-          </article>
-
-          <article class="panel module-detail">
-            <p class="section-tag">7. Выравнивание</p>
-            <h2>Архитектура и апекс</h2>
+          <div class="course-sidebar__block panel panel--soft course-side-note">
+            <p class="section-tag">Медиа-слоты</p>
             <p>
-              Выравнивание это создание правильной архитектуры ногтя. Здесь
-              важны формирование апекса, распределение материала и работа без
-              давления.
+              Внутри каждой главы есть блоки под фото, видео, схемы, скриншоты и
+              референсы. Их можно заменить реальными материалами без перестройки
+              всей страницы.
             </p>
-            <div class="note-box">
-              <strong>Апекс</strong>
+          </div>
+        </aside>
+
+        <div class="course-main">
+          <section class="panel panel--wide course-hero-card">
+            <div>
+              <p class="section-tag">MANIIKABINET</p>
+              <h2>Базовый курс маникюра</h2>
               <p>
-                Апекс это высшая точка ногтя, примерно 1/3 от кутикулы. В этот
-                блок можно дальше добавить схемы апекса и нестандартных ногтей.
+                От новичка до уверенного мастера. Содержание ниже работает как
+                навигация по проекту курса и по самому учебнику.
               </p>
             </div>
-          </article>
+            <div class="course-hero-card__badges">
+              <span>8 глав</span>
+              <span>игровой прогресс</span>
+              <span>фото / видео / схемы</span>
+            </div>
+          </section>
 
-          <article class="panel module-detail">
-            <p class="section-tag">8. Опил формы ногтей</p>
-            <h2>Овал и параллели</h2>
-            <p>Овал это мягкая форма, которая повторяет естественную линию ногтя.</p>
-            <p>Параллели требуют контроля оси и корректировки боковых стенок.</p>
-            <ul class="clean-list">
-              <li>мягкая форма</li>
-              <li>повторяет естественную линию</li>
-              <li>важно соблюдать ось</li>
-              <li>корректируем боковые стенки</li>
-            </ul>
-          </article>
-
-          <article class="panel module-detail module-detail--wide">
-            <p class="section-tag">Заключение</p>
-            <h2>Стабильность рождается из понимания</h2>
-            <p>Освоив базовые техники, мастер:</p>
-            <ul class="clean-list">
-              <li>работает быстрее</li>
-              <li>получает более стойкое покрытие</li>
-              <li>делает результат стабильным</li>
-            </ul>
-            <p>
-              Главное это практика и понимание процессов. MANIIKABINET —
-              обучение маникюру через систему, а не через случайные движения.
-            </p>
-          </article>
+          <section class="course-chapters" id="course-chapters"></section>
         </div>
-
-        <article class="panel panel--soft module-detail">
-          <p class="section-tag">Логика методички</p>
-          <h2>От понимания ногтя к уверенной практике</h2>
-          <p>
-            Вся методичка выстроена по нарастающей: сначала понимание строения,
-            потом снятие и подготовка, затем маникюр, покрытие, архитектура и
-            форма. Это делает обучение последовательным и профессиональным.
-          </p>
-        </article>
       </section>
     </main>
 
@@ -244,6 +111,7 @@
       </div>
     </footer>
 
+    <script src="course-data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

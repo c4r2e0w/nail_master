@@ -3,9 +3,9 @@ const STORAGE_KEY = "maniikabinet-progress";
 
 function loadState() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { visited: [], quizScore: null };
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { visited: [], quizScore: null, chapterDone: [] };
   } catch {
-    return { visited: [], quizScore: null };
+    return { visited: [], quizScore: null, chapterDone: [] };
   }
 }
 
@@ -48,6 +48,135 @@ function renderProgress() {
 
   document.querySelectorAll("[data-quiz-score]").forEach((node) => {
     node.textContent = state.quizScore === null ? "Последний результат: нет данных" : `Последний результат: ${state.quizScore}%`;
+  });
+}
+
+function renderCourseHub() {
+  const toc = document.getElementById("course-toc");
+  const chaptersRoot = document.getElementById("course-chapters");
+  if (!toc || !chaptersRoot || !window.courseData) return;
+
+  const state = loadState();
+  const doneSet = new Set(state.chapterDone || []);
+
+  toc.innerHTML = "";
+  chaptersRoot.innerHTML = "";
+
+  window.courseData.chapters.forEach((chapter) => {
+    const tocLink = document.createElement("a");
+    tocLink.href = `#${chapter.id}`;
+    tocLink.innerHTML = `<strong>${chapter.number}</strong><span>${chapter.title}</span>`;
+    toc.appendChild(tocLink);
+
+    const article = document.createElement("article");
+    article.className = "panel chapter-card";
+    article.id = chapter.id;
+
+    const theoryHtml = chapter.theory.length
+      ? `<div class="chapter-block"><h3>Ключевые принципы</h3><ul class="clean-list">${chapter.theory.map((item) => `<li>${item}</li>`).join("")}</ul></div>`
+      : "";
+
+    const stepsHtml = chapter.steps.length
+      ? `<div class="chapter-block"><h3>Этапы</h3><ol>${chapter.steps.map((item) => `<li>${item}</li>`).join("")}</ol></div>`
+      : "";
+
+    const mediaHtml = chapter.media.length
+      ? `<div class="media-grid">${chapter.media.map((item) => `
+          <article class="media-slot">
+            <span class="media-slot__type">${item.type}</span>
+            <h4>${item.title}</h4>
+            <p>${item.description}</p>
+          </article>
+        `).join("")}</div>`
+      : "";
+
+    article.innerHTML = `
+      <div class="chapter-card__head">
+        <div class="chapter-card__index">${chapter.number}</div>
+        <div class="chapter-card__title">
+          <h2>${chapter.title}</h2>
+          <p>${chapter.summary}</p>
+        </div>
+        <div class="chapter-status">
+          <span class="chapter-status__pill ${doneSet.has(chapter.id) ? "is-done" : ""}">
+            ${doneSet.has(chapter.id) ? "Пройдено" : "Не пройдено"}
+          </span>
+          <button type="button" data-chapter-toggle="${chapter.id}">
+            ${doneSet.has(chapter.id) ? "Снять отметку" : "Отметить пройденным"}
+          </button>
+        </div>
+      </div>
+      <div class="chapter-body">
+        <div class="chapter-block">
+          <h3>Смысл главы</h3>
+          <p>${chapter.note}</p>
+        </div>
+        <div class="chapter-body__grid">
+          ${theoryHtml}
+          ${stepsHtml}
+        </div>
+        <div class="chapter-block">
+          <h3>Мультимедиа материалы</h3>
+          <p>Ниже предусмотрены слоты под фото, видео, схемы и дополнительные материалы.</p>
+          ${mediaHtml}
+        </div>
+      </div>
+    `;
+
+    chaptersRoot.appendChild(article);
+  });
+
+  chaptersRoot.querySelectorAll("[data-chapter-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const chapterId = button.getAttribute("data-chapter-toggle");
+      const nextState = loadState();
+      const current = new Set(nextState.chapterDone || []);
+      if (current.has(chapterId)) current.delete(chapterId);
+      else current.add(chapterId);
+      nextState.chapterDone = [...current];
+      saveState(nextState);
+      renderCourseHub();
+      renderProgress();
+      renderCourseProgress();
+    });
+  });
+
+  const chapterLinks = [...toc.querySelectorAll("a")];
+  const chapterCards = [...chaptersRoot.querySelectorAll(".chapter-card")];
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      chapterLinks.forEach((link) => {
+        link.classList.toggle("is-current", link.getAttribute("href") === `#${visible.target.id}`);
+      });
+    },
+    { threshold: [0.2, 0.5, 0.8], rootMargin: "-20% 0px -55% 0px" }
+  );
+
+  chapterCards.forEach((card) => observer.observe(card));
+}
+
+function renderCourseProgress() {
+  if (!window.courseData) return;
+  const state = loadState();
+  const completed = (state.chapterDone || []).length;
+  const total = window.courseData.chapters.length;
+  const percent = Math.round((completed / total) * 100);
+  const degrees = Math.round((percent / 100) * 360);
+
+  document.querySelectorAll("[data-course-percent]").forEach((node) => {
+    node.textContent = `${percent}%`;
+    const ring = node.closest(".progress-widget__ring");
+    if (ring) {
+      ring.style.background = `radial-gradient(circle closest-side, rgba(255, 249, 245, 0.95) 76%, transparent 77% 100%), conic-gradient(var(--accent) 0deg, var(--accent-2) ${degrees}deg, rgba(255,255,255,0.45) ${degrees}deg)`;
+    }
+  });
+
+  document.querySelectorAll("[data-course-progress-text]").forEach((node) => {
+    node.textContent = `${completed} из ${total} глав пройдено`;
   });
 }
 
@@ -139,6 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
+  renderCourseHub();
   setupQuiz();
   renderProgress();
+  renderCourseProgress();
 });
