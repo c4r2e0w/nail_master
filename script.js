@@ -328,6 +328,16 @@ function setupHomeHeaderRail() {
     links.forEach((link, index) => {
       link.classList.toggle("is-current", scenes[index] === currentScene);
     });
+
+    const currentLink = links.find((link) => link.classList.contains("is-current"));
+    if (currentLink && window.innerWidth <= 820) {
+      const railRect = rail.getBoundingClientRect();
+      const linkRect = currentLink.getBoundingClientRect();
+      const isOutOfView = linkRect.left < railRect.left + 12 || linkRect.right > railRect.right - 12;
+      if (isOutOfView) {
+        currentLink.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      }
+    }
   };
 
   updateHeader();
