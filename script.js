@@ -223,54 +223,107 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
-function setupHomeFrameTimeline() {
+function setupHomeVideoTimeline() {
   if (document.body.dataset.page !== "home") return;
-  const frameNode = document.getElementById("home-scroll-frame");
-  if (!frameNode) return;
+  const video = document.getElementById("home-scroll-video");
+  if (!video) return;
 
-  const frameCount = 23;
-  const frameSources = Array.from({ length: frameCount }, (_, index) => {
-    const frameNumber = String(index + 1).padStart(3, "0");
-    return `assets/video/frames/frame-${frameNumber}.jpg`;
+  let duration = 5.6;
+  let currentTime = 0.04;
+  let currentVelocity = 0.05;
+  let targetVelocity = 0.05;
+  let direction = 1;
+  let lastTick = 0;
+  let lastScrollY = window.scrollY;
+  let lastScrollTime = performance.now();
+  let lastInteractionTime = lastScrollTime;
+  let isReady = false;
+  let rafId = 0;
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  const syncFromScroll = () => {
+    const now = performance.now();
+    const deltaY = window.scrollY - lastScrollY;
+    const deltaTime = Math.max(16, now - lastScrollTime);
+    const screensPerSecond = deltaY / Math.max(window.innerHeight, 1) / (deltaTime / 1000);
+
+    if (Math.abs(deltaY) > 0.5) {
+      direction = Math.sign(deltaY) || direction;
+      lastInteractionTime = now;
+    }
+
+    targetVelocity = clamp(screensPerSecond * 0.22, -0.82, 0.82);
+    lastScrollY = window.scrollY;
+    lastScrollTime = now;
+  };
+
+  const tick = (timestamp) => {
+    rafId = requestAnimationFrame(tick);
+    if (!isReady) return;
+
+    if (!lastTick) lastTick = timestamp;
+    const deltaTime = Math.min(0.05, (timestamp - lastTick) / 1000);
+    lastTick = timestamp;
+
+    const idleFor = timestamp - lastInteractionTime;
+    const baseVelocity = 0.045 * direction;
+    const desiredVelocity = idleFor > 160 ? baseVelocity : targetVelocity;
+    const easing = 1 - Math.exp(-deltaTime * 6.5);
+    currentVelocity += (desiredVelocity - currentVelocity) * easing;
+    currentTime += currentVelocity * deltaTime;
+
+    const edgePadding = 0.045;
+    const maxTime = Math.max(edgePadding, duration - edgePadding);
+
+    if (currentTime >= maxTime) {
+      currentTime = maxTime;
+      direction = -1;
+      targetVelocity = Math.min(targetVelocity, -0.18);
+      currentVelocity = Math.min(currentVelocity, 0);
+      lastInteractionTime = timestamp;
+    } else if (currentTime <= edgePadding) {
+      currentTime = edgePadding;
+      direction = 1;
+      targetVelocity = Math.max(targetVelocity, 0.18);
+      currentVelocity = Math.max(currentVelocity, 0);
+      lastInteractionTime = timestamp;
+    }
+
+    if (Math.abs(video.currentTime - currentTime) > 0.012) {
+      video.currentTime = currentTime;
+    }
+  };
+
+  const markReady = () => {
+    duration = video.duration || duration;
+    currentTime = clamp(currentTime, 0.04, Math.max(0.04, duration - 0.04));
+    isReady = true;
+    video.pause();
+    video.currentTime = currentTime;
+  };
+
+  video.addEventListener("loadedmetadata", markReady, { once: true });
+  video.addEventListener("canplay", markReady, { once: true });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+      lastTick = 0;
+      return;
+    }
+    if (!rafId) {
+      lastScrollY = window.scrollY;
+      lastScrollTime = performance.now();
+      rafId = requestAnimationFrame(tick);
+    }
   });
 
-  const preloadFrame = (src) => {
-    const image = new Image();
-    image.decoding = "async";
-    image.src = src;
-  };
-
-  frameSources.slice(0, 6).forEach(preloadFrame);
-
-  let currentFrame = -1;
-  let ticking = false;
-
-  const paintFrame = (index) => {
-    if (index === currentFrame) return;
-    currentFrame = index;
-    const src = frameSources[index];
-    frameNode.style.backgroundImage = `url("${src}")`;
-    preloadFrame(frameSources[Math.min(frameSources.length - 1, index + 1)]);
-  };
-
-  const syncFrameToScroll = () => {
-    ticking = false;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
-    const targetFrame = Math.min(frameSources.length - 1, Math.round(progress * (frameSources.length - 1)));
-    paintFrame(targetFrame);
-  };
-
-  const requestSync = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(syncFrameToScroll);
-  };
-
-  paintFrame(0);
-  window.addEventListener("scroll", requestSync, { passive: true });
-  window.addEventListener("resize", requestSync);
-  requestSync();
+  window.addEventListener("scroll", syncFromScroll, { passive: true });
+  window.addEventListener("resize", syncFromScroll);
+  syncFromScroll();
+  rafId = requestAnimationFrame(tick);
 }
 
 function setupRevealMotion() {
@@ -344,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
-  setupHomeFrameTimeline();
+  setupHomeVideoTimeline();
   setupRevealMotion();
   renderCourseHub();
   setupQuiz();

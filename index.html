@@ -19,11 +19,16 @@
   </head>
   <body data-page="home">
     <div class="home-video-stage" aria-hidden="true">
-      <div
-        class="home-video-stage__frame"
-        id="home-scroll-frame"
-        style="background-image: url('assets/video/frames/frame-001.jpg')"
-      ></div>
+      <video
+        class="home-video-stage__video"
+        id="home-scroll-video"
+        muted
+        playsinline
+        preload="auto"
+        poster="assets/video/frames/frame-001.jpg"
+      >
+        <source src="assets/video/hero-background-optimized.mp4" type="video/mp4" />
+      </video>
     </div>
     <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
     <div class="page-glow page-glow--top" aria-hidden="true"></div>
