@@ -43,8 +43,10 @@ body {
 body[data-page="home"] {
   background:
     linear-gradient(180deg, rgba(251, 245, 241, 0.08) 0%, rgba(247, 237, 231, 0.14) 45%, rgba(242, 225, 215, 0.26) 100%);
-  --text: #2f201b;
-  --muted: #684f48;
+  --text: #fff7f1;
+  --muted: rgba(255, 241, 233, 0.82);
+  --line: rgba(255, 244, 239, 0.22);
+  --line-strong: rgba(255, 177, 162, 0.48);
 }
 
 body[data-page="home"] .page-glow {
@@ -64,8 +66,8 @@ body[data-page="home"] .page-glow {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 18%, rgba(255, 210, 190, 0.16), transparent 24%),
-    linear-gradient(180deg, rgba(248, 238, 232, 0.12), rgba(246, 228, 220, 0.14) 35%, rgba(242, 225, 215, 0.24) 100%);
+    radial-gradient(circle at 20% 18%, rgba(255, 210, 190, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(52, 28, 24, 0.28), rgba(66, 35, 30, 0.24) 35%, rgba(34, 16, 13, 0.38) 100%);
 }
 
 .home-video-stage__video {
@@ -265,6 +267,38 @@ body[data-page="home"] .site-footer__panel--blessing {
   backdrop-filter: none;
 }
 
+body[data-page="home"] .brand__sub,
+body[data-page="home"] .site-nav a,
+body[data-page="home"] .lede,
+body[data-page="home"] .hero-facts__metrics span,
+body[data-page="home"] .editorial-index__list span,
+body[data-page="home"] .editorial-route__head p:last-child,
+body[data-page="home"] .site-footer p {
+  color: var(--muted);
+}
+
+body[data-page="home"] .brand__title,
+body[data-page="home"] .site-nav a:hover,
+body[data-page="home"] .site-nav a.is-active,
+body[data-page="home"] .hero h1,
+body[data-page="home"] .hero-facts__lead h2,
+body[data-page="home"] .editorial-lead h2,
+body[data-page="home"] .editorial-route__head h2,
+body[data-page="home"] .route-beat h3,
+body[data-page="home"] .site-footer__blessing strong {
+  color: var(--text);
+}
+
+body[data-page="home"] .section-tag,
+body[data-page="home"] .eyebrow,
+body[data-page="home"] .site-footer__eyebrow,
+body[data-page="home"] .chip strong,
+body[data-page="home"] .editorial-index__list strong,
+body[data-page="home"] .route-beat span,
+body[data-page="home"] .hero-facts__lead p {
+  color: #ffd1c4;
+}
+
 .panel--soft {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 242, 236, 0.95)),
@@ -344,6 +378,11 @@ body[data-page="home"] .site-footer__panel--blessing {
   background: rgba(255, 255, 255, 0.34);
 }
 
+body[data-page="home"] .chip {
+  border-color: rgba(255, 241, 233, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .chip strong,
 .chip span {
   display: block;
@@ -392,6 +431,12 @@ body[data-page="home"] .site-footer__panel--blessing {
   background: rgba(255, 255, 255, 0.46);
 }
 
+body[data-page="home"] .button--ghost {
+  color: var(--text);
+  border-color: rgba(255, 241, 233, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .hero-facts {
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
@@ -407,7 +452,6 @@ body[data-page="home"] .site-footer__panel--blessing {
 
 .hero-facts__lead p {
   margin: 0 0 12px;
-  color: rgba(52, 37, 32, 0.76);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.76rem;
@@ -419,7 +463,7 @@ body[data-page="home"] .site-footer__panel--blessing {
   font-family: "Playfair Display", serif;
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1.04;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
 }
 
 .hero-facts__metrics {
@@ -430,7 +474,7 @@ body[data-page="home"] .site-footer__panel--blessing {
 
 .hero-facts__metrics div {
   padding: 22px 18px;
-  border-top: 1px solid rgba(121, 90, 79, 0.18);
+  border-top: 1px solid rgba(255, 241, 233, 0.18);
 }
 
 .hero-facts__metrics strong,
@@ -441,7 +485,7 @@ body[data-page="home"] .site-footer__panel--blessing {
 .hero-facts__metrics strong {
   margin-bottom: 8px;
   font-size: clamp(1.8rem, 4vw, 2.4rem);
-  color: var(--accent);
+  color: #ffe4db;
 }
 
 .hero-facts__metrics span {
@@ -691,6 +735,12 @@ body[data-page="home"] .editorial-route__track > *:nth-child(5) {
   background: rgba(255, 255, 255, 0.28);
   border: 1px solid rgba(255, 255, 255, 0.46);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+body[data-page="home"] .route-beat {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 241, 233, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .route-beat::before {
