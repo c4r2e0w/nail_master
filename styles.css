@@ -251,13 +251,13 @@ body[data-page="home"] .scene-rail a {
   opacity: 0;
   transform: translate3d(0, 8px, 0) scale(0.96);
   transition:
-    max-width 360ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding 360ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 260ms ease,
-    color 260ms ease,
-    background 260ms ease,
-    border-color 260ms ease,
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    max-width 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 520ms ease,
+    color 520ms ease,
+    background 520ms ease,
+    border-color 520ms ease,
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .scene-rail a.is-visible {
@@ -271,7 +271,11 @@ body[data-page="home"] .scene-rail a.is-visible {
 }
 
 body[data-page="home"] .scene-rail a.is-entering {
-  animation: rail-item-rise 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: rail-item-rise 1040ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body[data-page="home"] .scene-rail a.is-leaving {
+  animation: rail-item-fall 1040ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .scene-rail a.is-current {
@@ -292,7 +296,11 @@ body[data-page="home"] .site-header.is-condensed .site-header__inner {
 }
 
 body[data-page="home"] .site-header.is-blooming .site-header__inner {
-  animation: header-bloom 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: header-bloom 840ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body[data-page="home"] .site-header.is-settling .site-header__inner {
+  animation: header-settle 840ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .site-header.is-condensed .brand__sub {
@@ -320,12 +328,39 @@ body[data-page="home"] .brand__sub {
   }
 }
 
+@keyframes rail-item-fall {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(0, 3px, 0) scale(0.985);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale(0.9);
+  }
+}
+
 @keyframes header-bloom {
   0% {
     transform: scale(1);
   }
   45% {
     transform: scale(1.022);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes header-settle {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(0.985);
   }
   100% {
     transform: scale(1);

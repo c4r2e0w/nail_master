@@ -310,6 +310,7 @@ function setupHomeHeaderRail() {
   const links = [...rail.querySelectorAll("[data-scene-link]")];
   let previousVisible = 0;
   let bloomTimer = null;
+  let settleTimer = null;
 
   const updateHeader = () => {
     header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
@@ -326,9 +327,15 @@ function setupHomeHeaderRail() {
       if (isRead) visibleCount += 1;
 
       if (!wasVisible && isRead) {
+        link.classList.remove("is-leaving");
         link.classList.remove("is-entering");
         void link.offsetWidth;
         link.classList.add("is-entering");
+      } else if (wasVisible && !isRead) {
+        link.classList.remove("is-entering");
+        link.classList.remove("is-leaving");
+        void link.offsetWidth;
+        link.classList.add("is-leaving");
       }
 
       if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {
@@ -341,7 +348,13 @@ function setupHomeHeaderRail() {
       if (bloomTimer) clearTimeout(bloomTimer);
       bloomTimer = setTimeout(() => {
         header.classList.remove("is-blooming");
-      }, 420);
+      }, 840);
+    } else if (visibleCount < previousVisible) {
+      header.classList.add("is-settling");
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        header.classList.remove("is-settling");
+      }, 840);
     }
     previousVisible = visibleCount;
 
