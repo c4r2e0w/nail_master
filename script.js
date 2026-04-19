@@ -235,9 +235,12 @@ function setupHomeVideoTimeline() {
   video.muted = true;
   video.defaultMuted = true;
   video.playsInline = true;
+  video.autoplay = true;
+  video.loop = true;
   video.setAttribute("muted", "");
   video.setAttribute("autoplay", "");
   video.setAttribute("playsinline", "");
+  video.setAttribute("loop", "");
 
   const ensurePlayback = () => {
     const playAttempt = video.play();
@@ -260,6 +263,7 @@ function setupHomeVideoTimeline() {
   video.addEventListener("loadedmetadata", markReady, { once: true });
   video.addEventListener("loadeddata", markReady, { once: true });
   video.addEventListener("canplay", markReady, { once: true });
+  video.addEventListener("canplaythrough", markReady, { once: true });
   video.addEventListener("ended", () => {
     video.currentTime = 0;
     ensurePlayback();
@@ -325,8 +329,10 @@ function setupHomeHeaderRail() {
 
   const links = [...rail.querySelectorAll("[data-scene-link]")];
   let previousVisible = 0;
+  let previousCurrentIndex = 0;
   let bloomTimer = null;
   let settleTimer = null;
+  let rippleTimer = null;
 
   const updateHeader = () => {
     header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
@@ -338,13 +344,8 @@ function setupHomeHeaderRail() {
       const isRead = rect.top <= window.innerHeight * 0.36;
       const link = links[index];
       if (!link) return;
-      const wasVisible = link.classList.contains("is-visible");
       link.classList.toggle("is-visible", isRead);
       if (isRead) visibleCount += 1;
-
-      if (!wasVisible && isRead) {
-        link.scrollTop = 0;
-      }
 
       if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {
         currentScene = scene;
@@ -371,6 +372,16 @@ function setupHomeHeaderRail() {
     links.forEach((link, index) => {
       link.classList.toggle("is-current", scenes[index] === currentScene);
     });
+
+    const currentIndex = scenes.findIndex((scene) => scene === currentScene);
+    if (currentIndex !== previousCurrentIndex) {
+      header.classList.add("is-rippling");
+      if (rippleTimer) clearTimeout(rippleTimer);
+      rippleTimer = setTimeout(() => {
+        header.classList.remove("is-rippling");
+      }, 1200);
+    }
+    previousCurrentIndex = currentIndex;
 
     const currentLink = links.find((link) => link.classList.contains("is-current"));
     if (currentLink && window.innerWidth <= 820) {
