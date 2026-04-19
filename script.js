@@ -235,6 +235,9 @@ function setupHomeVideoTimeline() {
   video.muted = true;
   video.defaultMuted = true;
   video.playsInline = true;
+  video.setAttribute("muted", "");
+  video.setAttribute("autoplay", "");
+  video.setAttribute("playsinline", "");
 
   const ensurePlayback = () => {
     const playAttempt = video.play();
@@ -249,8 +252,8 @@ function setupHomeVideoTimeline() {
   };
 
   const markReady = () => {
-    video.defaultPlaybackRate = 0.88;
-    video.playbackRate = 0.88;
+    video.defaultPlaybackRate = 1;
+    video.playbackRate = 1;
     ensurePlayback();
   };
 
@@ -262,7 +265,7 @@ function setupHomeVideoTimeline() {
     ensurePlayback();
   });
   video.addEventListener("pause", () => {
-    if (!document.hidden) ensurePlayback();
+    if (!document.hidden) requestAnimationFrame(ensurePlayback);
   });
 
   document.addEventListener("visibilitychange", () => {
@@ -304,6 +307,7 @@ function setupHomeVideoTimeline() {
   setInterval(() => {
     if (!document.hidden && video.paused) ensurePlayback();
   }, 1200);
+  video.load();
   requestAnimationFrame(animateFocus);
 }
 
@@ -323,7 +327,6 @@ function setupHomeHeaderRail() {
   let previousVisible = 0;
   let bloomTimer = null;
   let settleTimer = null;
-  const hideTimers = new WeakMap();
 
   const updateHeader = () => {
     header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
@@ -336,32 +339,11 @@ function setupHomeHeaderRail() {
       const link = links[index];
       if (!link) return;
       const wasVisible = link.classList.contains("is-visible");
+      link.classList.toggle("is-visible", isRead);
       if (isRead) visibleCount += 1;
 
       if (!wasVisible && isRead) {
-        const pendingHide = hideTimers.get(link);
-        if (pendingHide) {
-          clearTimeout(pendingHide);
-          hideTimers.delete(link);
-        }
-        link.classList.add("is-visible");
-        link.classList.remove("is-leaving");
-        link.classList.remove("is-entering");
-        void link.offsetWidth;
-        link.classList.add("is-entering");
-      } else if (wasVisible && !isRead) {
-        link.classList.remove("is-entering");
-        link.classList.remove("is-leaving");
-        void link.offsetWidth;
-        link.classList.add("is-leaving");
-        const hideTimer = setTimeout(() => {
-          link.classList.remove("is-visible");
-          link.classList.remove("is-leaving");
-          hideTimers.delete(link);
-        }, 1380);
-        hideTimers.set(link, hideTimer);
-      } else {
-        link.classList.toggle("is-visible", isRead || link.classList.contains("is-leaving"));
+        link.scrollTop = 0;
       }
 
       if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {
@@ -371,16 +353,18 @@ function setupHomeHeaderRail() {
 
     if (visibleCount > previousVisible) {
       header.classList.add("is-blooming");
+      header.classList.remove("is-settling");
       if (bloomTimer) clearTimeout(bloomTimer);
       bloomTimer = setTimeout(() => {
         header.classList.remove("is-blooming");
-      }, 840);
+      }, 1100);
     } else if (visibleCount < previousVisible) {
       header.classList.add("is-settling");
+      header.classList.remove("is-blooming");
       if (settleTimer) clearTimeout(settleTimer);
       settleTimer = setTimeout(() => {
         header.classList.remove("is-settling");
-      }, 840);
+      }, 1100);
     }
     previousVisible = visibleCount;
 
