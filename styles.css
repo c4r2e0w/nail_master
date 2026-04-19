@@ -393,22 +393,14 @@ body[data-page="home"] .site-main {
   box-shadow: var(--shadow);
 }
 
-body[data-page="home"] .panel,
-body[data-page="home"] .hero-facts {
-  border-color: rgba(255, 255, 255, 0.58);
-  background:
-    linear-gradient(180deg, rgba(255, 251, 248, 0.62), rgba(255, 244, 238, 0.72)),
-    rgba(255, 249, 246, 0.4);
-  backdrop-filter: blur(14px);
-}
-
 body[data-page="home"] .hero__copy,
 body[data-page="home"] .editorial-lead,
 body[data-page="home"] .editorial-index,
 body[data-page="home"] .hero-facts__lead,
 body[data-page="home"] .hero-facts__metrics,
 body[data-page="home"] .editorial-route__head,
-body[data-page="home"] .site-footer__panel--blessing {
+body[data-page="home"] .site-footer__blessing,
+body[data-page="home"] .site-footer__panel .pager {
   position: relative;
   border: 1px solid rgba(255, 244, 239, 0.16);
   background:
@@ -427,7 +419,8 @@ body[data-page="home"] .editorial-index::before,
 body[data-page="home"] .hero-facts__lead::before,
 body[data-page="home"] .hero-facts__metrics::before,
 body[data-page="home"] .editorial-route__head::before,
-body[data-page="home"] .site-footer__panel--blessing::after {
+body[data-page="home"] .site-footer__blessing::after,
+body[data-page="home"] .site-footer__panel .pager::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1423,16 +1416,33 @@ body[data-page="home"] .site-footer {
 }
 
 .site-footer__panel--blessing {
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-footer__blessing {
   position: relative;
+  z-index: 1;
+  max-width: 760px;
   overflow: hidden;
   padding: 30px 32px;
+  border-radius: 32px;
   background:
     radial-gradient(circle at top right, rgba(255, 110, 114, 0.14), transparent 22%),
     radial-gradient(circle at bottom left, rgba(255, 179, 106, 0.16), transparent 24%),
     linear-gradient(135deg, rgba(255, 252, 249, 0.9), rgba(255, 244, 238, 0.92));
 }
 
-.site-footer__panel--blessing::before {
+body[data-page="home"] .site-footer__panel .pager {
+  padding: 14px 16px;
+  border-radius: 24px;
+}
+
+.site-footer__blessing::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1441,12 +1451,6 @@ body[data-page="home"] .site-footer {
   transform: translateX(-100%);
   animation: blessing-sheen 5.4s ease-in-out infinite;
   pointer-events: none;
-}
-
-.site-footer__blessing {
-  position: relative;
-  z-index: 1;
-  max-width: 760px;
 }
 
 .site-footer__eyebrow {
