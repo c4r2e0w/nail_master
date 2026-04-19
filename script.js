@@ -308,22 +308,42 @@ function setupHomeHeaderRail() {
     .join("");
 
   const links = [...rail.querySelectorAll("[data-scene-link]")];
+  let previousVisible = 0;
+  let bloomTimer = null;
 
   const updateHeader = () => {
     header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
 
     let currentScene = scenes[0];
+    let visibleCount = 0;
     scenes.forEach((scene, index) => {
       const rect = scene.getBoundingClientRect();
       const isRead = rect.top <= window.innerHeight * 0.36;
       const link = links[index];
       if (!link) return;
+      const wasVisible = link.classList.contains("is-visible");
       link.classList.toggle("is-visible", isRead);
+      if (isRead) visibleCount += 1;
+
+      if (!wasVisible && isRead) {
+        link.classList.remove("is-entering");
+        void link.offsetWidth;
+        link.classList.add("is-entering");
+      }
 
       if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {
         currentScene = scene;
       }
     });
+
+    if (visibleCount > previousVisible) {
+      header.classList.add("is-blooming");
+      if (bloomTimer) clearTimeout(bloomTimer);
+      bloomTimer = setTimeout(() => {
+        header.classList.remove("is-blooming");
+      }, 420);
+    }
+    previousVisible = visibleCount;
 
     links.forEach((link, index) => {
       link.classList.toggle("is-current", scenes[index] === currentScene);
