@@ -330,12 +330,14 @@ function setupHomeHeaderRail() {
   const links = [...rail.querySelectorAll("[data-scene-link]")];
   let previousVisible = 0;
   let previousCurrentIndex = 0;
+  let isReady = false;
+  let ticking = false;
   let bloomTimer = null;
   let settleTimer = null;
   let rippleTimer = null;
 
   const updateHeader = () => {
-    header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
+    header.classList.toggle("is-condensed", window.scrollY > Math.max(120, window.innerHeight * 0.24));
 
     let currentScene = scenes[0];
     let visibleCount = 0;
@@ -374,6 +376,13 @@ function setupHomeHeaderRail() {
     });
 
     const currentIndex = scenes.findIndex((scene) => scene === currentScene);
+    if (!isReady) {
+      previousVisible = visibleCount;
+      previousCurrentIndex = Math.max(currentIndex, 0);
+      isReady = true;
+      return;
+    }
+
     if (currentIndex !== previousCurrentIndex) {
       header.classList.add("is-rippling");
       if (rippleTimer) clearTimeout(rippleTimer);
@@ -394,9 +403,18 @@ function setupHomeHeaderRail() {
     }
   };
 
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      updateHeader();
+    });
+  };
+
   updateHeader();
-  window.addEventListener("scroll", updateHeader, { passive: true });
-  window.addEventListener("resize", updateHeader);
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
 }
 
 function setupRevealMotion() {
