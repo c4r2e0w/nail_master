@@ -47,7 +47,11 @@ body {
 
 body[data-page="home"] {
   background:
-    linear-gradient(180deg, rgba(251, 245, 241, 0.08) 0%, rgba(247, 237, 231, 0.14) 45%, rgba(242, 225, 215, 0.26) 100%);
+    radial-gradient(circle at 18% 16%, rgba(255, 132, 120, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 14%, rgba(77, 207, 218, 0.16), transparent 20%),
+    radial-gradient(circle at 68% 72%, rgba(255, 179, 106, 0.16), transparent 24%),
+    radial-gradient(circle at 24% 82%, rgba(209, 92, 255, 0.1), transparent 18%),
+    linear-gradient(180deg, #3d2622 0%, #5a342e 28%, #7c4f46 56%, #b88a78 100%);
   --text: #fff7f1;
   --muted: rgba(255, 241, 233, 0.82);
   --line: rgba(255, 244, 239, 0.22);
@@ -56,34 +60,6 @@ body[data-page="home"] {
 
 body[data-page="home"] .page-glow {
   opacity: 0.68;
-}
-
-.home-video-stage {
-  position: fixed;
-  inset: 0;
-  z-index: -4;
-  overflow: hidden;
-  background: #281a16;
-}
-
-.home-video-stage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 18%, rgba(255, 210, 190, 0.12), transparent 24%),
-    linear-gradient(180deg, rgba(52, 28, 24, 0.28), rgba(66, 35, 30, 0.24) 35%, rgba(34, 16, 13, 0.38) 100%);
-}
-
-.home-video-stage__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center var(--video-focus-y, 26%);
-  transform: none;
-  will-change: object-position;
 }
 
 body.menu-open {

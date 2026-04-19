@@ -223,98 +223,6 @@ function setupScrollProgress() {
   window.addEventListener("resize", update);
 }
 
-function setupHomeVideoTimeline() {
-  if (document.body.dataset.page !== "home") return;
-  const video = document.getElementById("home-scroll-video");
-  if (!video) return;
-
-  const scenes = [...document.querySelectorAll(".home-scene")];
-  let currentFocus = Number(scenes[0]?.dataset.videoFocus || 16);
-  let targetFocus = currentFocus;
-
-  video.muted = true;
-  video.defaultMuted = true;
-  video.playsInline = true;
-  video.autoplay = true;
-  video.loop = true;
-  video.setAttribute("muted", "");
-  video.setAttribute("autoplay", "");
-  video.setAttribute("playsinline", "");
-  video.setAttribute("loop", "");
-
-  const ensurePlayback = () => {
-    const playAttempt = video.play();
-    if (playAttempt && typeof playAttempt.catch === "function") {
-      playAttempt.catch(() => {});
-    }
-  };
-
-  const applyScene = (scene) => {
-    scenes.forEach((node) => node.classList.toggle("is-active", node === scene));
-    targetFocus = Number(scene?.dataset.videoFocus || targetFocus);
-  };
-
-  const markReady = () => {
-    video.defaultPlaybackRate = 1;
-    video.playbackRate = 1;
-    ensurePlayback();
-  };
-
-  video.addEventListener("loadedmetadata", markReady, { once: true });
-  video.addEventListener("loadeddata", markReady, { once: true });
-  video.addEventListener("canplay", markReady, { once: true });
-  video.addEventListener("canplaythrough", markReady, { once: true });
-  video.addEventListener("ended", () => {
-    video.currentTime = 0;
-    ensurePlayback();
-  });
-  video.addEventListener("pause", () => {
-    if (!document.hidden) requestAnimationFrame(ensurePlayback);
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      return;
-    }
-    ensurePlayback();
-  });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const activeEntry = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-      if (activeEntry) {
-        applyScene(activeEntry.target);
-      }
-    },
-    {
-      threshold: [0.45, 0.6, 0.8],
-      rootMargin: "-6% 0px -6% 0px"
-    }
-  );
-
-  scenes.forEach((scene) => observer.observe(scene));
-  if (scenes[0]) applyScene(scenes[0]);
-
-  const animateFocus = () => {
-    currentFocus += (targetFocus - currentFocus) * 0.08;
-    video.style.setProperty("--video-focus-y", `${currentFocus.toFixed(2)}%`);
-    requestAnimationFrame(animateFocus);
-  };
-
-  window.addEventListener("pageshow", ensurePlayback);
-  window.addEventListener("scroll", ensurePlayback, { passive: true });
-  window.addEventListener("touchstart", ensurePlayback, { passive: true });
-  ensurePlayback();
-  setInterval(() => {
-    if (!document.hidden && video.paused) ensurePlayback();
-  }, 1200);
-  video.load();
-  requestAnimationFrame(animateFocus);
-}
-
 function setupHomeHeaderRail() {
   if (document.body.dataset.page !== "home") return;
 
@@ -506,7 +414,6 @@ document.addEventListener("DOMContentLoaded", () => {
   markVisited(currentPage);
   setupNav();
   setupScrollProgress();
-  setupHomeVideoTimeline();
   setupHomeHeaderRail();
   setupRevealMotion();
   renderCourseHub();
