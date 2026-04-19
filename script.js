@@ -232,6 +232,10 @@ function setupHomeVideoTimeline() {
   let currentFocus = Number(scenes[0]?.dataset.videoFocus || 16);
   let targetFocus = currentFocus;
 
+  video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
+
   const ensurePlayback = () => {
     const playAttempt = video.play();
     if (playAttempt && typeof playAttempt.catch === "function") {
@@ -251,10 +255,14 @@ function setupHomeVideoTimeline() {
   };
 
   video.addEventListener("loadedmetadata", markReady, { once: true });
+  video.addEventListener("loadeddata", markReady, { once: true });
   video.addEventListener("canplay", markReady, { once: true });
   video.addEventListener("ended", () => {
     video.currentTime = 0;
     ensurePlayback();
+  });
+  video.addEventListener("pause", () => {
+    if (!document.hidden) ensurePlayback();
   });
 
   document.addEventListener("visibilitychange", () => {
@@ -290,8 +298,12 @@ function setupHomeVideoTimeline() {
   };
 
   window.addEventListener("pageshow", ensurePlayback);
+  window.addEventListener("scroll", ensurePlayback, { passive: true });
   window.addEventListener("touchstart", ensurePlayback, { passive: true });
   ensurePlayback();
+  setInterval(() => {
+    if (!document.hidden && video.paused) ensurePlayback();
+  }, 1200);
   requestAnimationFrame(animateFocus);
 }
 
@@ -311,6 +323,7 @@ function setupHomeHeaderRail() {
   let previousVisible = 0;
   let bloomTimer = null;
   let settleTimer = null;
+  const hideTimers = new WeakMap();
 
   const updateHeader = () => {
     header.classList.toggle("is-condensed", window.scrollY > Math.max(80, window.innerHeight * 0.18));
@@ -323,10 +336,15 @@ function setupHomeHeaderRail() {
       const link = links[index];
       if (!link) return;
       const wasVisible = link.classList.contains("is-visible");
-      link.classList.toggle("is-visible", isRead);
       if (isRead) visibleCount += 1;
 
       if (!wasVisible && isRead) {
+        const pendingHide = hideTimers.get(link);
+        if (pendingHide) {
+          clearTimeout(pendingHide);
+          hideTimers.delete(link);
+        }
+        link.classList.add("is-visible");
         link.classList.remove("is-leaving");
         link.classList.remove("is-entering");
         void link.offsetWidth;
@@ -336,6 +354,14 @@ function setupHomeHeaderRail() {
         link.classList.remove("is-leaving");
         void link.offsetWidth;
         link.classList.add("is-leaving");
+        const hideTimer = setTimeout(() => {
+          link.classList.remove("is-visible");
+          link.classList.remove("is-leaving");
+          hideTimers.delete(link);
+        }, 1380);
+        hideTimers.set(link, hideTimer);
+      } else {
+        link.classList.toggle("is-visible", isRead || link.classList.contains("is-leaving"));
       }
 
       if (rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.32) {

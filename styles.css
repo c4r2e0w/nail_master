@@ -251,13 +251,13 @@ body[data-page="home"] .scene-rail a {
   opacity: 0;
   transform: translate3d(0, 8px, 0) scale(0.96);
   transition:
-    max-width 720ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding 720ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 520ms ease,
-    color 520ms ease,
-    background 520ms ease,
-    border-color 520ms ease,
-    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+    max-width 1200ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 1200ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 900ms ease,
+    color 900ms ease,
+    background 900ms ease,
+    border-color 900ms ease,
+    transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .scene-rail a.is-visible {
@@ -271,11 +271,11 @@ body[data-page="home"] .scene-rail a.is-visible {
 }
 
 body[data-page="home"] .scene-rail a.is-entering {
-  animation: rail-item-rise 1040ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: rail-item-rise 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .scene-rail a.is-leaving {
-  animation: rail-item-fall 1040ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: rail-item-fall 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .scene-rail a.is-current {
@@ -296,11 +296,11 @@ body[data-page="home"] .site-header.is-condensed .site-header__inner {
 }
 
 body[data-page="home"] .site-header.is-blooming .site-header__inner {
-  animation: header-bloom 840ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: header-bloom 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .site-header.is-settling .site-header__inner {
-  animation: header-settle 840ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: header-settle 1400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="home"] .site-header.is-condensed .brand__sub {
@@ -316,11 +316,11 @@ body[data-page="home"] .brand__sub {
 @keyframes rail-item-rise {
   0% {
     opacity: 0;
-    transform: translate3d(0, 20px, 0) scale(0.9);
+    transform: translate3d(0, 28px, 0) scale(0.88);
   }
   55% {
     opacity: 1;
-    transform: translate3d(0, -3px, 0) scale(1.03);
+    transform: translate3d(0, -5px, 0) scale(1.045);
   }
   100% {
     opacity: 1;
@@ -335,11 +335,11 @@ body[data-page="home"] .brand__sub {
   }
   45% {
     opacity: 1;
-    transform: translate3d(0, 3px, 0) scale(0.985);
+    transform: translate3d(0, 5px, 0) scale(0.98);
   }
   100% {
     opacity: 0;
-    transform: translate3d(0, 20px, 0) scale(0.9);
+    transform: translate3d(0, 28px, 0) scale(0.88);
   }
 }
 
@@ -348,7 +348,7 @@ body[data-page="home"] .brand__sub {
     transform: scale(1);
   }
   45% {
-    transform: scale(1.022);
+    transform: scale(1.04);
   }
   100% {
     transform: scale(1);
@@ -360,7 +360,7 @@ body[data-page="home"] .brand__sub {
     transform: scale(1);
   }
   45% {
-    transform: scale(0.985);
+    transform: scale(0.965);
   }
   100% {
     transform: scale(1);
