@@ -530,6 +530,11 @@ body[data-page="home"] .hero-facts__lead p {
   font-size: clamp(2.8rem, 7vw, 6rem);
 }
 
+.hero__title-link {
+  display: inline-block;
+  color: inherit;
+}
+
 .hero h1 span {
   display: block;
   color: #ff7f81;
